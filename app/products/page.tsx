@@ -2,7 +2,7 @@ import { getProducts } from "@/lib/api";
 import { Product } from "@/types/product";
 import ProductList from "@/components/ProductList";
 
-const Products = async () => {
+const ProductsPage = async () => {
   const products: Product[] = await getProducts();
 
   return (
@@ -13,4 +13,4 @@ const Products = async () => {
   );
 };
 
-export default Products;
+export default ProductsPage;
