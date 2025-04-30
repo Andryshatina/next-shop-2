@@ -3,10 +3,11 @@ import { getProductById } from "@/lib/api";
 import ProductDetails from "@/components/ProductDetails";
 
 type PageProps = {
-  params: Record<string, string>;
+  params: { id: string };
 };
+
 const ProductPage = async ({ params }: PageProps) => {
-  const { id } = params;
+  const { id } = await params;
   const product: Product = await getProductById(Number(id));
 
   return <ProductDetails product={product} />;
