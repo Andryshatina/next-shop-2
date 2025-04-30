@@ -1,9 +1,9 @@
 "use client";
 import { useCartStore } from "@/store/cartStore";
-import { Product } from "@/types/product";
+import { CartItemType } from "@/types/product";
 import Image from "next/image";
 
-const CartItem = ({ item }: { item: Product }) => {
+const CartItem = ({ item }: { item: CartItemType }) => {
   const removeFromCart = useCartStore((store) => store.removeFromCart);
   return (
     <div className="flex items-center bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
@@ -18,6 +18,7 @@ const CartItem = ({ item }: { item: Product }) => {
       <div className="flex-1 ml-6">
         <h2 className="text-lg font-medium text-gray-800">{item.title}</h2>
         <p className="text-indigo-600 font-semibold mt-1">${item.price}</p>
+        <p className="text-gray-800">x{item.quantity}</p>
       </div>
       <button
         onClick={() => removeFromCart(item.id)}
