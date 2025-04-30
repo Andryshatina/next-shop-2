@@ -6,7 +6,7 @@ type PageProps = {
   params: Record<string, string>;
 };
 const ProductPage = async ({ params }: PageProps) => {
-  const { id } = await params;
+  const { id } = params;
   const product: Product = await getProductById(Number(id));
 
   return <ProductDetails product={product} />;
