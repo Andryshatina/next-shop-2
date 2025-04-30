@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
+import { useSession, signOut } from "next-auth/react";
 
 const Navbar = () => {
   const totalItems = useCartStore((store) =>
     store.cartItems.reduce((sum, item) => (sum += item.quantity), 0)
   );
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-gradient-to-r from-lime-100 to-lime-200 shadow-md">
@@ -63,24 +65,56 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-
-            <Link
-              href="/login"
-              className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-            >
-              <svg
-                className="w-5 h-5 mr-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            {session ? (
+              <p className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">
+                <svg
+                  className="w-5 h-5 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                {session.user?.name}
+                <button
+                  className="ml-2 inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 transition-all transform hover:scale-105 active:scale-95"
+                  onClick={() => signOut()}
+                >
+                  <svg
+                    className="w-3 h-3 mr-1"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.58L17 17L22 12L17 7ZM4 5H12V3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H12V19H4V5Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </p>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
               >
-                <path
-                  d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
-                  fill="currentColor"
-                />
-              </svg>
-              Login
-            </Link>
+                <svg
+                  className="w-5 h-5 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
