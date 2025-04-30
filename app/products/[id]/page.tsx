@@ -2,7 +2,10 @@ import { Product } from "@/types/product";
 import { getProductById } from "@/lib/api";
 import ProductDetails from "@/components/ProductDetails";
 
-const ProductPage = async ({ params }: { params: { id: string } }) => {
+type PageProps = {
+  params: Record<string, string>;
+};
+const ProductPage = async ({ params }: PageProps) => {
   const { id } = await params;
   const product: Product = await getProductById(Number(id));
 
