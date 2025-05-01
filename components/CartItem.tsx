@@ -5,6 +5,7 @@ import Image from "next/image";
 
 const CartItem = ({ item }: { item: CartItemType }) => {
   const removeFromCart = useCartStore((store) => store.removeFromCart);
+  const updateQuantity = useCartStore((store) => store.updateQuantity);
   return (
     <div className="flex items-center bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
       <div className="relative w-24 h-24">
@@ -18,11 +19,61 @@ const CartItem = ({ item }: { item: CartItemType }) => {
       <div className="flex-1 ml-6">
         <h2 className="text-lg font-medium text-gray-800">{item.title}</h2>
         <p className="text-indigo-600 font-semibold mt-1">${item.price}</p>
-        <p className="text-gray-800">x{item.quantity}</p>
+
+        <div className="flex items-center mt-2">
+          <button
+            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+            disabled={item.quantity <= 1}
+            className={`p-1 rounded-md ${
+              item.quantity <= 1
+                ? "text-gray-300 cursor-not-allowed"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+            aria-label="Decrease quantity"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M18 12H6"
+              />
+            </svg>
+          </button>
+
+          <span className="mx-3 min-w-[20px] text-center">{item.quantity}</span>
+
+          <button
+            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+            className="p-1 rounded-md text-gray-700 hover:bg-gray-100"
+            aria-label="Increase quantity"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <button
         onClick={() => removeFromCart(item.id)}
-        className="text-gray-500 hover:text-red-500 transition-colors"
+        className="text-gray-500 hover:text-red-500 transition-colors ml-4"
         aria-label="Remove from cart"
       >
         <svg

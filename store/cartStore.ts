@@ -4,6 +4,7 @@ import { Product, CartItemType } from "@/types/product";
 interface CartStore {
   cartItems: CartItemType[];
   addToCart: (product: Product) => void;
+  updateQuantity: (id: number, quantity: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
 }
@@ -24,6 +25,14 @@ export const useCartStore = create<CartStore>((set) => ({
         return { cartItems: updatedItems };
       } else
         return { cartItems: [...state.cartItems, { ...product, quantity: 1 }] };
+    });
+  },
+  updateQuantity: (id, quantity) => {
+    set((state) => {
+      const updatedItems = state.cartItems.map((item) =>
+        item.id === id ? { ...item, quantity: quantity } : item
+      );
+      return { cartItems: updatedItems };
     });
   },
   removeFromCart: (id) =>
